@@ -76,13 +76,13 @@ else
                 imdb=getImdb(Name_batch{i},conf,net.meta,IsTrain);
             end
             mkdir(['./mat/',Name_batch{i}]);
-            save(filename,'-struct','imdb');
+            save(filename,'-struct','imdb','-v7.3');
             clear imdb;
         end
     end
     imdb=produceIMDB(labelNum,net,Name_batch,conf);
     mkdir(opts.expDir);
-    save(opts.imdbPath,'-struct','imdb');
+    save(opts.imdbPath,'-struct','imdb','-v7.3');
 end
 net.meta.classes.name=imdb.meta.classes(:)';
 

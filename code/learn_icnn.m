@@ -1,5 +1,6 @@
 function [net,info]=learn_icnn(model,Name_batch,dropoutRate)
 load(['./mat/',Name_batch,'/conf.mat'],'conf');
+
 conf.data.Name_batch=Name_batch;
 opts.dataDir=conf.data.imgdir;
 opts.expDir=fullfile(conf.output.dir,conf.data.Name_batch);
@@ -19,8 +20,9 @@ labelNum=1;
 net=network_init(labelNum,model,dropoutRate,'networkType',opts.networkType);
 
 
-%% Prepare data
+% Prepare data
 if exist(opts.imdbPath,'file')
+  % disp('branch1')
   imdb=load(opts.imdbPath) ;
 else
   IsTrain=true;
@@ -30,13 +32,38 @@ else
       imdb=getImdb(conf.data.Name_batch,conf,net.meta,IsTrain);
   end
   mkdir(opts.expDir);
-  save(opts.imdbPath,'-struct','imdb');
+  % disp('branch2')
+  % disp(imdb)
+  % ======= imdb ======
+    % images: [1x1 struct]
+      % meta: [1x1 struct]
+  save(opts.imdbPath,'-struct','imdb','-v7.3');
+  % whos('-file', opts.imdbPath)
 end
 
 net.meta.classes.name=imdb.meta.classes(:)';
 
 
-%% Train
+% %% Train
+% disp('======= net ======')
+% disp(net)
+% disp('======= opts ======')
+% disp(opts)
+% disp('======= getBatch(opts) ====')
+% disp(getBatch(opts))
+% disp('======= opts.expDir ========')
+% disp(opts.expDir)
+% disp('======= net.meta.trainOpts ======')
+% disp(net.meta.trainOpts)
+% disp('======= opts.train =======')
+% disp(opts.train)
+% disp('======= imdb ======')
+% disp(imdb)
+% disp('======= imdb.images =======')
+% disp(imdb.images)
+% disp('======= find(imdb.images.set==2) ======')
+% disp(find(imdb.images.set==2))
+
 [net,info]=our_cnn_train(net,imdb,getBatch(opts),'expDir',opts.expDir,net.meta.trainOpts,opts.train,'val',find(imdb.images.set==2));
 end
 

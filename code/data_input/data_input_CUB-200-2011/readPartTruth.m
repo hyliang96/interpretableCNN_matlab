@@ -65,7 +65,7 @@ for i=1:length(imgnames)
         classID=str2num(words{1});
         logInd=batchClassnamePair{1}==classID;
         classname=batchClassnamePair{2}(logInd);
-        
+
         name=classname;
         bndbox.xmin=int2str(x(i));
         bndbox.xmax=int2str(x(i)+width(i));
@@ -102,4 +102,4 @@ for i=1:length(truth)
     end
 end
 
-save(sprintf('%s%s/truth_part%02d.mat',theConf.output.dir,Name_batch,partID),'truth');
+save(sprintf('%s%s/truth_part%02d.mat',theConf.output.dir,Name_batch,partID),'truth','-v7.3');

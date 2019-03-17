@@ -58,5 +58,5 @@ for i=1:objNum
     fprintf('%s   scale %d   %d\n',Name_batch,tarSize(1),i);
 end
 filename=sprintf('../results/imdb/%d/%s/partMask.mat',tarSize(1),Name_batch);
-save(filename,'partPos');
+save(filename,'partPos','-v7.3');
 end

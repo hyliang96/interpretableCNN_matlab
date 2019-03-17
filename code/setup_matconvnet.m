@@ -19,7 +19,9 @@ catch
 end
 
 %% download pre-trained CNNs
-mkdir('../nets');
+if(~exist('../nets','dir'))
+    mkdir('../nets');
+end
 if(~exist('../nets/imagenet-vgg-verydeep-16.mat','file'))
     system('wget -O ../nets/imagenet-vgg-verydeep-16.mat --no-check-certificate http://www.vlfeat.org/matconvnet/models/imagenet-vgg-verydeep-16.mat');
 end

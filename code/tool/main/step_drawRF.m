@@ -6,7 +6,9 @@ visualizationStep=50;
 rng(1);
 
 fileRoot='./draw_RF';
-mkdir(fileRoot);
+if (~exist(fileRoot,'dir'))
+    mkdir(fileRoot);
+end
 createImages(Name_batch,layerID,fileRoot,epochNum,showNum,integrateEnergy,theConf,visualizationStep);
 end
 
@@ -36,7 +38,9 @@ if(strcmp(theConf.data.Name_batch,'cub200'))
 end
 imgNum=numel(objset);
 root_ori=fullfile(theConf.output.dir,'img_ori');
-mkdir(root_ori);
+if (~exist(root_ori,'dir'))
+    mkdir(root_ori);
+end
 convnet=getConvNetPara(net);
 net=vl_simplenn_tidy(net);
 net=our_vl_simplenn_move(net,'gpu');
@@ -91,7 +95,7 @@ for dep=1:depth
     validMap(dep,validList)=true;
     assert(validNum>=showNum);
     tmp=randperm(validNum);
-    validMap(dep,validList(tmp(showNum+1:end)))=false;    
+    validMap(dep,validList(tmp(showNum+1:end)))=false;
 end
 count=zeros(depth,1);
 validDepthVisualization=1:visualizationStep:depth;
@@ -192,7 +196,9 @@ drawThreshold=0.5;
 
 root_ori=fullfile(theConf.output.dir,'img_ori');
 root_RF=fullfile(theConf.output.dir,'img_RF');
-mkdir(root_RF);
+if (~exist(root_RF,'dir'))
+    mkdir(root_RF);
+end
 filename=sprintf('%s/%s_tau.mat',root_ori,theConf.data.Name_batch);
 tau=load(filename,'tau');
 convnet=getConvNetPara(net);
@@ -233,7 +239,7 @@ for W=1:xw
         thePos=x2p_([H;W],layerID,convnet);
         hmin=ih-thePos(1)+1;
         wmin=iw-thePos(2)+1;
-        RFMask(:,:,c)=T(hmin:hmin+ih-1,wmin:wmin+ih-1);
+        RFMask(:,:,c)=T(round(hmin):round(hmin+ih-1),round(wmin):round(wmin+ih-1));
     end
 end
 RFMask=gpuArray(RFMask);
@@ -332,7 +338,9 @@ end
 function drawRawFMaskF(net,layerID,showNum,theConf,visualizationStep)
 root_ori=fullfile(theConf.output.dir,'img_ori');
 root_maskF=fullfile(theConf.output.dir,'img_maskF');
-mkdir(root_maskF);
+if (~exist(root_maskF,'dir'))
+    mkdir(root_maskF);
+end
 convnet=getConvNetPara(net);
 net=vl_simplenn_tidy(net);
 net=our_vl_simplenn_move(net,'gpu');

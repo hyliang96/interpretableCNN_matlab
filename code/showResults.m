@@ -6,7 +6,7 @@ else
 end
 addpath(genpath('./tool'));
 addpath(genpath('./tool/edges-master/piotr_toolbox/external'));
-toolboxCompile;
+% toolboxCompile;
 
 
 %% compute classification error and location stability
