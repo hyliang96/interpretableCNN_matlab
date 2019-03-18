@@ -268,7 +268,7 @@ Warning: You are using gcc version '5.4.0'. The version of gcc is not supported.
 
 ## demo的内容
 
-都是二分类，没有多分类
+可以多分类、可以二分类
 
 评价：分类错误率（binary error）、location stability、没有part interpretability
 
