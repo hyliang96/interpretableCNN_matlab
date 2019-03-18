@@ -1,12 +1,22 @@
 %% Selections of the dataset, model, and category
+% the arguements we tried
+    % ilsvrcanimalpart n02118333 vgg-vd-16 0.8 false
+    % vocpart bird vgg-vd-16 0.8 false
+    % cub200 cub200 vgg-vd-16 0.8 false
+
 % Choices of the dataset. You may select 'ilsvrcanimalpart', 'vocpart', or 'cub200'.
-dataset='ilsvrcanimalpart'; %'vocpart'; 'cub200';
+dataset='cub200'; %'vocpart'; 'cub200';
 % If you select dataset='ilsvrcanimalpart', then you may choose of the following categories.
-% 'n01443537','n01503061','n01639765','n01662784','n01674464','n01882714','n01982650','n02084071','n02118333','n02121808','n02129165','n02129604','n02131653','n02324045','n02342885','n02355227','n02374451','n02391049','n02395003','n02398521','n02402425','n02411705','n02419796','n02437136','n02444819','n02454379','n02484322','n02503517','n02509815','n02510455'
+    % 'n01443537','n01503061','n01639765','n01662784','n01674464','n01882714','n01982650',
+    % 'n02084071','n02118333','n02121808','n02129165','n02129604','n02131653','n02324045',
+    % 'n02342885','n02355227','n02374451','n02391049','n02395003','n02398521','n02402425',
+    % 'n02411705','n02419796','n02437136','n02444819','n02454379','n02484322','n02503517',
+    % 'n02509815','n02510455'
 % If you select dataset='vocpart', then you may choose of the following categories.
-% 'bird','cat','cow','dog','horse','sheep'
-% If you select dataset='vocpart', then you need to choose categoryName='cub200'.
-categoryName='n02118333';
+    % 'bird','cat','cow','dog','horse','sheep'
+% If you select dataset='cub200', then you need to choose
+    % categoryName='cub200'.
+categoryName='cub200';
 % Choices of the networks. You may select 'vgg-vd-16', 'alexnet', 'vgg-m', or 'vgg-s'.
 model='vgg-vd-16'; % 'alexnet'; 'vgg-m'; 'vgg-s';
 dropoutRate=0.8; %0.5; 0.6; 0.7; 0.8; 0.9; %when using a small number of training samples, avoid over-fitting.
@@ -59,3 +69,4 @@ if(isMultiClassClassification)
     end
 end
 showResults(categoryName,isMultiClassClassification,model,dataset);
+

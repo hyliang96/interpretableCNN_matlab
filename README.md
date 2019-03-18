@@ -154,13 +154,27 @@ save(opts.imdbPath,'-struct','imdb','-v7.3');
 
 解决办法：matlab下
 
-```xmatlab
-gpuDevice(<要用的显卡编号>)
-```
+* 法一
 
-此时`gpustat`看见自己用了指定的那张显卡，然后再执行原先的matlab命令
+  退出matlab，然后执行下命令以启动matlab
 
-注意：matlab中"<要用的显卡编号>"从1开始，与`nvidia-smi`从0开始不同
+  ```shell
+  gpuid <n> matlab
+  # n为要用的显卡编号，从0开始
+  ```
+
+* 法二
+
+  不退出matlab
+
+  ```matlab
+  gpuDevice(<要用的显卡编号>)
+  # 注意：matlab中"<要用的显卡编号>"从1开始，与nvidia-smi从0开始不同
+  ```
+
+  此时`gpustat`看见自己用了指定的那张显卡，然后再执行原先的matlab命令
+
+  此法可能在执行`demo`中，因为代码中有切换gpuDevice的命令，造成使用的显卡变化，故推荐使用法一
 
 ### You are using gcc version '5.4.0'. 
 
@@ -252,13 +266,19 @@ Warning: You are using gcc version '5.4.0'. The version of gcc is not supported.
      1802.9089 seconds testing time.
   ```
 
+## demo的内容
+
+都是二分类，没有多分类
+
+评价：分类错误率（binary error）、location stability、没有part interpretability
+
 ## 运行
 
 之后使用不用编译
 
 ```shell
 cd ./code
-matlab
+gpuid <n> matlab
 ```
 
 matlab中运行
@@ -268,5 +288,28 @@ warning off
 run demo
 ```
 
+初次运行会自动下载数据集到`./data/{detanimalpart/,VOC_part_backup/,neg/}`；再次运行发现有此数据集目录，则不下载。然后开始训练，模型参数存到`./code/mat/<类别>/net-epoch-<第几epoch>.mat`。再测试。
+
+之后再运行
+
+```
+warning off
+run demo
+```
+
+皆加载（epoch 50）直接测试，不训练。
+
+测试的返回
+
+```bash
+our_cnn_train: resuming by loading epoch 50
+    0.0977 # location stability
+
+binary error 0.057214     location stability 0.097671
+# 分类错误率
+# 没有part interpretability
+```
+
 ## 修改参数
 
+修改`code/demo.m`开头的参数
