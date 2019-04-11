@@ -160,9 +160,11 @@ opts.debug            = false;
 opts.cudaMethod       = [] ;
 opts.cudaRoot         = [] ;
 opts.cudaArch         = [] ;
-opts.defCudaArch      = [...
-  '-gencode=arch=compute_20,code=\"sm_20,compute_20\" '...
-  '-gencode=arch=compute_30,code=\"sm_30,compute_30\"'];
+% 根据https://www.cnblogs.com/xyzzhangfan/p/8594326.html<Paste>修改
+% '-gencode=arch=compute_20,code=\"sm_20,compute_20\" '...
+opts.defCudaArch = [...
+'-gencode=arch=compute_30,code=\"sm_30,compute_30\" '...
+'-gencode=arch=compute_52,code=\"sm_52,compute_52\"'];
 opts.cudnnRoot        = 'local/cudnn' ;
 opts = vl_argparse(opts, varargin);
 
@@ -539,11 +541,20 @@ opts.verbose && fprintf('%s: NVCC CC: %s\n', mfilename, nvcc_cmd) ;
 status = system(nvcc_cmd);
 if status, error('Command %s failed.', nvcc_cmd); end;
 
+% % --------------------------------------------------------------------
+% function mex_link(opts, objs, mex_dir, mex_flags)
+% % --------------------------------------------------------------------
+% mopts = {'-outdir', mex_dir, mex_flags{:}, objs{:}} ;
+% opts.verbose && fprintf('%s: MEX LINK: %s\n', mfilename, strjoin(mopts)) ;
+% mex(mopts{:}) ;
+% 修改依据 https://github.com/vlfeat/matconvnet/issues/1144
 % --------------------------------------------------------------------
 function mex_link(opts, objs, mex_dir, mex_flags)
+mex_flags=['-R2018b',mex_flags(1:end-1)];
 % --------------------------------------------------------------------
 mopts = {'-outdir', mex_dir, mex_flags{:}, objs{:}} ;
 opts.verbose && fprintf('%s: MEX LINK: %s\n', mfilename, strjoin(mopts)) ;
+
 mex(mopts{:}) ;
 
 % --------------------------------------------------------------------

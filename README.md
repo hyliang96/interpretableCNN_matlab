@@ -194,7 +194,7 @@ warning off
 
 # 运行方法
 
-## 编译
+## [编译](http://www.vlfeat.org/matconvnet/install/)
 
 首次使用，需要编译
 
@@ -228,11 +228,44 @@ Warning: You are using gcc version '5.4.0'. The version of gcc is not supported.
 - ```matlab
   cd ./matconvnet-1.0-beta24/matlab/
   vl_compilenn('enableGpu', true, ...
-                 'cudaRoot', '/Developer/NVIDIA/CUDA-8.0', ...
+                 'cudaRoot', '/usr/local/cuda', ...
                  'cudaMethod', 'nvcc')
+                 
+                 
+  vl_compilenn('enableGpu', true, ...
+                 'cudaMethod', 'nvcc', ...
+                 'cudaRoot', '/usr/local/cuda-9.0', ...
+                 'enableCudnn', true, ...
+                 'cudnnRoot', 'local/cudnn-rc4') ;
+                 
+                 
+  vl_compilenn('enableGpu', true, ...
+      'cudaMethod', 'nvcc', ...
+      'cudaRoot', '/usr/local/cuda-9.0')
+      
+      '/mfs/haoyu/project/AOCNN/InterpretableCNN_matlab/matconvnet-1.0-beta24/local/cudnn');
   ```
 
-- 之后每次启动`matlab`，请加前缀
+  其中`/usr/local/cuda` 可从 `locate cuda-8.0` 
+
+  
+
+  > nvcc fatal   : Unsupported gpu architecture 'compute_20'
+
+  https://www.cnblogs.com/xyzzhangfan/p/8594326.html
+
+  https://github.com/vlfeat/matconvnet/issues/575
+
+  https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/
+
+  > Warning: You are using gcc version '5.4.0'. The version of gcc is not supported. The version
+  > currently supported with MEX is '6.3.x'. For a list of currently supported compilers see:
+  > https://www.mathworks.com/support/compilers/current_release.
+  >
+  > \> In vl_compilenn>mex_compile (line 531)
+  >    In vl_compilenn (line 492)
+
+- 之后每次启动`matlab`，请加输入
 
   ```shell
   LD_PRELOAD="/usr/lib/x86_64-linux-gnu/libstdc++.so.6" matlab
@@ -299,17 +332,21 @@ run demo
 
 皆加载（epoch 50）直接测试，不训练。
 
-测试的返回
+### 测试的返回
 
 ```bash
 our_cnn_train: resuming by loading epoch 50
     0.0977 # location stability
 
 binary error 0.057214     location stability 0.097671
-# 分类错误率
+# 分类错误率                # location stability
 # 没有part interpretability
 ```
 
 ## 修改参数
 
 修改`code/demo.m`开头的参数
+
+## 在哪台服务器上跑成功过
+
+g5
