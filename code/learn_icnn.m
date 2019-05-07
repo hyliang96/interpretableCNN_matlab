@@ -44,7 +44,8 @@ end
 net.meta.classes.name=imdb.meta.classes(:)';
 
 
-% %% Train
+
+%% Train
 % disp('======= net ======')
 % disp(net)
 % disp('======= opts ======')

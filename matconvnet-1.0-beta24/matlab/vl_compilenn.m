@@ -685,6 +685,8 @@ function cuver = activate_nvcc(nvccPath)
 
 % Validate the NVCC compiler installation
 [valid, cuver] = validate_nvcc(nvccPath) ;
+% valid: `nvcc` command can works
+% cuver: `nvcc` version
 if ~valid
   error('The NVCC compiler ''%s'' does not appear to be valid.', nvccPath) ;
 end
@@ -700,7 +702,8 @@ end
 % available in the command line search path. Make sure that this is%
 % the case.
 [valid_, cuver_] = validate_nvcc('nvcc') ;
-if ~valid_ || cuver_ ~= cuver
+if ~valid_
+    % || cuver_ ~= cuver   % comment this to suuport the case where there are multiple versions of version in the system
   warning('NVCC not found in the command line path or the one found does not matches ''%s''.', nvccPath);
   nvccDir = fileparts(nvccPath) ;
   prevPath = getenv('PATH') ;
