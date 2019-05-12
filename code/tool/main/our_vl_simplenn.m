@@ -5,7 +5,7 @@ function res=our_vl_simplenn(net, x, dzdy, res, varargin)
 %%% Variables in this code (e.g., alpha, beta, alpha_logZ_XXX, and mask)
 %%% do not exactly represent concepts/notation with the same names in the paper.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
- 
+
 if(sum(x(:)<-10)==0)
     error('Errors in input');
 end
@@ -239,8 +239,8 @@ if doder
               'dilate', l.dilate, ...
               l.opts{:}, ...
               cudnn{:}) ;
-          
-          
+
+
           depthList=find(l.filter>0);
           labelNum=size(net.layers{end}.class,3);
           if(labelNum==1)
@@ -260,13 +260,13 @@ if doder
                   end
               end
           end
-          
-          
+
+
           imgNum=size(net.layers{end}.class,4);
-          
+
           alpha=0.5;
           res(i).dzdx=res(i).dzdx.*max(mask,0);
-          
+
           if(sum(l.filter==1)>0)
               l.strength=reshape(mean(mean(res(i).x.*mask,1),2),[depth,batchS]);
               alpha_logZ_pos=reshape(log(mean(exp(mean(mean(res(i).x.*mask(:,:,end:-1:1,end:-1:1),1),2)./alpha),4)).*alpha,[depth,1]);
@@ -274,7 +274,7 @@ if doder
               alpha_logZ_pos(isinf(alpha_logZ_pos))=max(alpha_logZ_pos(isinf(alpha_logZ_pos)==0));
               alpha_logZ_neg(isinf(alpha_logZ_neg))=max(alpha_logZ_neg(isinf(alpha_logZ_neg)==0));
           end
-          
+
           for lab=1:numel(Div)
               if(numel(Div)==1)
                   w_pos=1;
@@ -288,7 +288,7 @@ if doder
                       w_neg=0.5./(1-net.layers{end}.density(lab));
                   end
               end
-              
+
               %% For parts
               mag=ones(depth,imgNum)./(1/net.layers{end}.iter)./l.mag; %1.2;
               dList=Div(lab).depthList;
@@ -304,7 +304,7 @@ if doder
                       strength(isinf(strength))=max(strength(isinf(strength)==0));
                       res(i).dzdx(:,:,dList,list)=res(i).dzdx(:,:,dList,list)-mask(:,:,dList,list).*repmat(strength,[h,w,1,1]).*(0.00001*w_pos);
                   end
-                  
+
                   list_neg=setdiff(1:batchS,Div(lab).posList);
                   if(~isempty(list_neg))
                       strength=reshape(mean(mean(res(i).x(:,:,dList,list_neg),1),2),[numel(dList),numel(list_neg)]);
@@ -318,8 +318,8 @@ if doder
                   end
               end
           end
-          
-          
+
+
           beta=3;
           dzdw{3}=gpuArray(zeros(depth,1,'single'));
           for lab=1:numel(Div)

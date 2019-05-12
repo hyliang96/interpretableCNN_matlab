@@ -1,4 +1,6 @@
 function showResults(Name_batch,isMultiClassClassification,model,dataset)
+% disp('Name_batch')
+% disp(Name_batch)
 if(isMultiClassClassification)
     load(['./mat/',Name_batch{1},'/conf.mat'],'conf');
 else
@@ -71,6 +73,8 @@ end
 
 
 function [binaryerror,stability]=getResult_multiClass(nameList,layerID,fileRoot,epochNum,partList,conf)
+% disp('nameList')
+% disp(nameList)
 str=[];
 if(numel(nameList)>10)
     for i=1:numel(nameList)

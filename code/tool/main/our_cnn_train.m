@@ -206,7 +206,7 @@ for epoch=start+1:opts.numEpochs
     drawnow ;
     print(1, modelFigPath, '-dpdf') ;
   end
-  
+
   if ~isempty(opts.postEpochFn)
     if nargout(opts.postEpochFn) == 0
       opts.postEpochFn(net, params, state) ;
@@ -366,7 +366,7 @@ for t=1:params.batchSize:numel(subset)
   if strcmp(mode, 'train')
     if ~isempty(parserv), parserv.sync() ; end
     [net, res, state] = accumulateGradients(net, res, state, params, batchSize, parserv) ;
-    
+
     labelNum=size(net.layers{end}.class,3);
     for lay=1:numel(net.layers) %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         if(strcmp(net.layers{lay}.type,'conv_mask'))
@@ -378,7 +378,7 @@ for t=1:params.batchSize:numel(subset)
                 if(~isempty(tmp))
                     %meantmp=sum(tmp,4)./max(sum(tmp>0,4),1);
                     meantmp=mean(tmp,4);
-                    
+
                     if(sum(net.layers{lay}.sliceMag(:,lab))==0)
                         net.layers{lay}.sliceMag(:,lab)=max(meantmp(:),0.1);
                     else
@@ -391,7 +391,7 @@ for t=1:params.batchSize:numel(subset)
         end
     end
   end
-  
+
   % get statistics
   time = toc(start) + adjustTime ;
   batchTime = time - stats.time ;
